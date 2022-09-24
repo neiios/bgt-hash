@@ -33,6 +33,32 @@ uint32_t usigma1(uint32_t x) {
   return rotr(x, 6) ^ rotr(x, 11) ^ rotr(x, 25);
 }
 
+// choice
+// use first input to determine whether to take input from the second or third
+// variable
+uint32_t choice(uint32_t x, uint32_t y, uint32_t z) {
+  bitset<32> xbits(x), ybits(y), zbits(z), output;
+  for (int i = 0; i < 32; i++) {
+    if (xbits[i]) {
+      output[i] = ybits[i];
+    } else {
+      output[i] = zbits[i];
+    }
+  }
+  return output.to_ulong();
+}
+
+// majority
+// result is the majority of 3 bits
+uint32_t majority(uint32_t x, uint32_t y, uint32_t z) {
+  bitset<32> xbits(x), ybits(y), zbits(z), output;
+  for (int i = 0; i < 32; i++) {
+    output[i] = (xbits[i] && ybits[i]) || (ybits[i] && zbits[i]) ||
+                (zbits[i] && xbits[i]);
+  }
+  return output.to_ulong();
+}
+
 string HashingFunction() {
   return "hash\n";
 }
