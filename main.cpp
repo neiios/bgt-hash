@@ -1,5 +1,5 @@
-#include "hash.hpp"
 #include <iostream>
+#include "hash.hpp"
 
 using namespace std;
 
