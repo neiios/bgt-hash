@@ -86,5 +86,142 @@ uint32_t majority(uint32_t x, uint32_t y, uint32_t z) {
 }
 
 string HashingFunction() {
-  return "hash\n";
+  string message =
+      "I'd just like to interject for a moment. What you're refering to as "
+      "Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, "
+      "GNU plus Linux. Linux is not an operating system unto itself, but "
+      "rather another free component of a fully functioning GNU system made "
+      "useful by the GNU corelibs, shell utilities and vital system components "
+      "comprising a full OS as defined by POSIX. Many computer users run a "
+      "modified version of the GNU system every day, without realizing it. "
+      "Through a peculiar turn of events, the version of GNU which is widely "
+      "used today is often called Linux, and many of its users are not aware "
+      "that it is basically the GNU system, developed by the GNU Project. "
+      "There really is a Linux, and these people are using it, but it is just "
+      "a part of the system they use. Linux is the kernel: the program in the "
+      "system that allocates the machine's resources to the other programs "
+      "that you run. The kernel is an essential part of an operating system, "
+      "but useless by itself; it can only function in the context of a "
+      "complete operating system. Linux is normally used in combination with "
+      "the GNU operating system: the whole system is basically GNU with Linux "
+      "added, or GNU/Linux. All the so-called Linux distributions are really "
+      "distributions of GNU/Linux!!";
+
+  // convert data string to a vector of bytes
+  vector<uint8_t> bytes;
+  for (uint8_t byte : message) {
+    bytes.push_back(byte);
+  }
+
+  // pad the string and add the separator
+  uint64_t messageLength = bytes.size() * 8;
+
+  // how many zero we need to append for the message to become a multiple of 512
+  // not including separator (8 bits) and last 64 bits
+  uint64_t zerosToAdd =
+      ceil(((double)messageLength + 72) / 512) * 512 - (messageLength + 72);
+
+  cout << "zeros to add variable " << zerosToAdd << endl;
+  cout << "message length in bits " << messageLength << endl;
+  cout << "message size in bytes " << bytes.size() << endl;
+
+  // add a separator (128 is 10000000 in binary)
+  bytes.push_back(128);
+
+  // pad with zeros
+  for (uint64_t i = 0; i < zerosToAdd; i += 8) {
+    bytes.push_back(0);
+  }
+
+  // append message length as last 64 bits
+  uint64_t temp = messageLength;
+  vector<uint8_t> tempBytes;
+  for (size_t i = 0; i < 8; i++) {
+    tempBytes.push_back(static_cast<uint8_t>(temp & 0xFF));
+    temp >>= 8;
+  }
+  for (int i = 0; i < 8; i++) {
+    bytes.push_back(tempBytes.back());
+    tempBytes.pop_back();
+  }
+
+  // for (size_t i = 0; i < bytes.size(); i++) {
+  //   cout << i << ": " << (int)bytes[i] << " ";
+  //   if (i % 8 == 0 && i != 0)
+  //     cout << endl;
+  // }
+  // cout << endl;
+
+  // next we will work with 512 bit chunks of data (called message block)
+  for (size_t i = 0; i < bytes.size(); i += 64) {
+    uint32_t W[64]{0};
+    // creating a message schedule
+    for (size_t j = 0; j < 16; j++) {
+      W[j] = ((uint32_t)bytes[i + j * 4] << 24) |
+             ((uint32_t)bytes[i + j * 4 + 1] << 16) |
+             ((uint32_t)bytes[i + j * 4 + 2] << 8) |
+             ((uint32_t)bytes[i + j * 4 + 3]);
+    }
+    // creating more words in working schedule
+    for (size_t j = 16; j < 64; j++) {
+      W[j] = sigma1(W[j - 2]) + W[j - 7] + sigma0(W[j - 15]) + W[j - 16];
+    }
+
+    // for (size_t j = 0; j < 64; j++) {
+    //   bitset<32> wBin(W[j]);
+    //   cout << "W" << j << " " << wBin << endl;
+    // }
+
+    // cout << "initial values\n";
+    // for (int k = 0; k < 8; k++) {
+    //   bitset<32> bi(H[k]);
+    //   cout << "H" << k << " " << bi << endl;
+    // }
+
+    // initialize working variables
+    vector<uint32_t> H = H0;
+
+    // compression
+    for (size_t j = 0; j < 64; j++) {
+      // two temporary words
+      uint32_t T1 =
+          usigma1(H[4]) + choice(H[4], H[5], H[6]) + H[7] + K[j] + W[j];
+      uint32_t T2 = usigma0(H[0]) + majority(H[0], H[1], H[2]);
+
+      // bitset<32> tempT1(T1);
+      // cout << "T1 " << tempT1 << endl;
+      // bitset<32> tempT2(T2);
+      // cout << "T2 " << tempT2 << endl;
+
+      // move everything inside hash vector down
+      for (size_t k = 7; k > 0; k--) {
+        H[k] = H[k - 1];
+      }
+
+      // put a new word inside the first register
+      H[0] = T1 + T2;
+      // update the word inside fourth register
+      H[4] += T1;
+
+      // cout << "-------- after iteration" << j << "--------" << endl;
+      // for (int k = 0; k < 8; k++) {
+      //   bitset<32> bi(H[k]);
+      //   cout << "H" << k << " " << bi << endl;
+      // }
+    }
+
+    for (int k = 0; k < 8; k++) {
+      H0[k] += H[k];
+    }
+  }
+
+  stringstream res;
+  for (int k = 0; k < 8; k++) {
+    bitset<32> bi(H0[k]);
+    cout << "H" << k << " " << bi << endl;
+    // should strictly output 8 characters
+    res << hex << setfill('0') << setw(8) << bi.to_ulong();
+  }
+
+  return res.str();
 }
