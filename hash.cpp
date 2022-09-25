@@ -12,7 +12,6 @@ uint32_t rotr(uint32_t n, uint32_t c) {
 }
 
 // movements (compound bit operations)
-
 // lowercase sigma 0
 uint32_t sigma0(uint32_t x) {
   return rotr(x, 7) ^ rotr(x, 18) ^ (x >> 3);
