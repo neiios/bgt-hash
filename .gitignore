@@ -5,3 +5,5 @@ bin
 .cache
 .vscode
 compile_commands.json
+build
+cmake-build-debug
