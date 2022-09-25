@@ -34,6 +34,19 @@ uint32_t Hash::majority(uint32_t x, uint32_t y, uint32_t z) {
   return output.to_ulong();
 }
 
+void Hash::appendMessageLength(uint64_t messageLength, vector<uint8_t> bytes) {
+  uint64_t temp = messageLength;
+  vector<uint8_t> tempBytes;
+  for (size_t i = 0; i < 8; i++) {
+    tempBytes.push_back(static_cast<uint8_t>(temp & 0xFF));
+    temp >>= 8;
+  }
+  for (int i = 0; i < 8; i++) {
+    bytes.push_back(tempBytes.back());
+    tempBytes.pop_back();
+  }
+}
+
 string Hash::HashingFunction(const string& message) {
   // convert data string to a vector of bytes
   vector<uint8_t> bytes;
@@ -58,16 +71,7 @@ string Hash::HashingFunction(const string& message) {
   }
 
   // append message length as last 64 bits
-  uint64_t temp = messageLength;
-  vector<uint8_t> tempBytes;
-  for (size_t i = 0; i < 8; i++) {
-    tempBytes.push_back(static_cast<uint8_t>(temp & 0xFF));
-    temp >>= 8;
-  }
-  for (int i = 0; i < 8; i++) {
-    bytes.push_back(tempBytes.back());
-    tempBytes.pop_back();
-  }
+  appendMessageLength(messageLength, bytes);
 
   // next we will work with 512 bit chunks of data (called message block)
   for (size_t i = 0; i < bytes.size(); i += 64) {
