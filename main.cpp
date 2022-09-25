@@ -4,6 +4,9 @@
 using namespace std;
 
 int main() {
-  cout << HashingFunction() << endl;
+  string message;
+  getline(std::cin, message);
+  Hash h;
+  cout << h.HashingFunction(message) << endl;
   return 0;
 }
