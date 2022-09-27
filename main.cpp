@@ -16,9 +16,10 @@ string outputHelp() {
 inline string readFromFile(const string& path) {
   ostringstream buf;
   ifstream file(path);
-  file.close();
   buf << file.rdbuf();
-  return buf.str();
+  file.close();
+  // removes the newline at the end of the file
+  return buf.str().substr(0, buf.str().size() - 1);
 }
 
 int main(int argc, char* argv[]) {
