@@ -44,17 +44,14 @@ string Hash::HashingFunction(const string& message) {
   // pad the string and add the separator
   uint64_t messageLength = bytes.size() * 8;
 
-  // how many zero we need to append for the message to become a multiple of
-  // 512 not including separator (8 bits) and last 64 bits
+  // how many ones we need to append for the message to become a multiple of
+  // 1024 not including last 64 bits
   uint64_t zerosToAdd =
-      ceil(((double)messageLength + 72) / 512) * 512 - (messageLength + 72);
+      ceil(((double)messageLength + 64) / 1024) * 1024 - (messageLength + 64);
 
-  // add a separator (128 is 10000000 in binary)
-  bytes.push_back(128);
-
-  // pad with zeros
+  // pad with ones
   for (uint64_t i = 0; i < zerosToAdd; i += 8) {
-    bytes.push_back(0);
+    bytes.push_back(255);
   }
 
   // append message length as last 64 bits
@@ -69,40 +66,47 @@ string Hash::HashingFunction(const string& message) {
     tempBytes.pop_back();
   }
 
-  // next we will work with 512 bit chunks of data (called message block)
-  for (size_t i = 0; i < bytes.size(); i += 64) {
-    uint32_t W[64]{0};
+  // next we will work with 1024 bit chunks of data
+  for (size_t i = 0; i < bytes.size(); i += 128) {
+    uint32_t W[128]{0};
     // creating a message schedule
-    for (size_t j = 0; j < 16; j++) {
+    for (size_t j = 0; j < 32; j++) {
       W[j] = ((uint32_t)bytes[i + j * 4] << 24) |
              ((uint32_t)bytes[i + j * 4 + 1] << 16) |
              ((uint32_t)bytes[i + j * 4 + 2] << 8) |
              ((uint32_t)bytes[i + j * 4 + 3]);
     }
     // creating more words in working schedule
-    for (size_t j = 16; j < 64; j++) {
-      W[j] = sigma1(W[j - 2]) + W[j - 7] + sigma0(W[j - 15]) + W[j - 16];
+    for (size_t j = 32; j < 128; j++) {
+      W[j] = sigma1(W[j - 14]) + rotr(W[j - 4], 3) + sigma0(W[j - 7]) +
+             sigma0(W[j - 16]);
+    }
+
+    // very important loop
+    for (size_t j = 0; j < 96; j++) {
+      W[j] = (majority(W[j + 3], W[j + 10], W[j]) + rotr(W[j + 11], 14)) ^
+             sigma0(W[j + 2]);
     }
 
     // initialize working variables
     vector<uint32_t> H = H0;
 
     // compression
-    for (size_t j = 0; j < 64; j++) {
+    for (size_t j = 0; j < 128; j++) {
       // two temporary words
       uint32_t T1 =
-          usigma1(H[4]) + choice(H[4], H[5], H[6]) + H[7] + K[j] + W[j];
-      uint32_t T2 = usigma0(H[0]) + majority(H[0], H[1], H[2]);
+          usigma0(H[3]) + majority(H[1], H[2], H[3]) + H[7] + K[j] + W[j];
+      uint32_t T2 = usigma1(H[0]) + choice(H[5], H[6], H[7]);
 
-      // move everything inside hash vector down
-      for (size_t k = 7; k > 0; k--) {
-        H[k] = H[k - 1];
+      // move everything up
+      for (size_t k = 0; k < 7; k++) {
+        H[k] = H[k + 1];
       }
 
       // put a new word inside the first register
-      H[0] = T1 + T2;
+      H[7] = (T1 + T2) ^ T2;
       // update the word inside fourth register
-      H[4] += T1;
+      H[3] += T1;
     }
 
     for (int k = 0; k < 8; k++) {

@@ -46,7 +46,7 @@ class Hash {
    * @param x number
    * @return uint32_t
    */
-  uint32_t sigma0(uint32_t x) { return rotr(x, 7) ^ rotr(x, 18) ^ (x >> 3); }
+  uint32_t sigma0(uint32_t x) { return rotr(x, 4) ^ rotr(x, 19) ^ (x >> 4); }
 
   /**
    * @brief lowercase sigma 1
@@ -54,7 +54,7 @@ class Hash {
    * @param x number
    * @return uint32_t
    */
-  uint32_t sigma1(uint32_t x) { return rotr(x, 17) ^ rotr(x, 19) ^ (x >> 10); }
+  uint32_t sigma1(uint32_t x) { return rotr(x, 21) ^ rotr(x, 8) ^ (x << 7); }
 
   /**
    * @brief uppercase sigma 0
@@ -63,7 +63,7 @@ class Hash {
    * @return uint32_t
    */
   uint32_t usigma0(uint32_t x) {
-    return rotr(x, 2) ^ rotr(x, 13) ^ rotr(x, 22);
+    return rotr(x, 3) + (rotr(x, 5) ^ rotr(x, 18));
   }
 
   /**
@@ -73,7 +73,7 @@ class Hash {
    * @return uint32_t
    */
   uint32_t usigma1(uint32_t x) {
-    return rotr(x, 6) ^ rotr(x, 11) ^ rotr(x, 25);
+    return rotr(x, 13) ^ (rotr(x, 8) + rotr(x, 12));
   }
 
   /**
