@@ -97,14 +97,6 @@ class Hash {
    */
   uint32_t majority(uint32_t x, uint32_t y, uint32_t z);
 
-  /**
-   * @brief appends message length as last 64 bits
-   *
-   * @param messageLength the length of message
-   * @param vector of bytes to append length to
-   */
-  void appendMessageLength(uint64_t messageLength, std::vector<uint8_t> bytes);
-
  public:
   /**
    * @brief the main function of the class, hashes provided string
