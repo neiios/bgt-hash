@@ -23,7 +23,11 @@ inline string readFromFile(const string& path) {
     buf << file.rdbuf();
     file.close();
     // removes the newline at the end of the file
-    return buf.str().substr(0, buf.str().size() - 1);
+    if (!buf.str().empty() && buf.str()[buf.str().length() - 1] == '\n') {
+      return buf.str().substr(0, buf.str().size() - 1);
+    } else {
+      return buf.str();
+    }
   } else {
     throw "file " + path + " cannot be opened\n";
   }
@@ -55,24 +59,22 @@ void callHashingFunctionNStrings(const string& arg) {
     Hash h;
     string line;
     getline(message, line);
-    cout << line << " " << h.HashingFunction(line) << endl;
+    cout << h.HashingFunction(line) << endl;
   }
 }
 
 int main(int argc, char* argv[]) {
   int c, index;
-  string message;
 
   if (argc == 1) {
     cout << outputHelp();
     return 42;
   }
 
-  while ((c = getopt(argc, argv, "f:n:sh")) != -1) {
+  while ((c = getopt(argc, argv, "f:n:s:h")) != -1) {
     switch (c) {
       case 'f':
         try {
-          cout << "reading from file " << optarg << endl;
           cout << callHashingFunctionFile(optarg) << endl;
           break;
         } catch (const string& err) {
@@ -81,7 +83,6 @@ int main(int argc, char* argv[]) {
         }
       case 'n':
         try {
-          cout << "working with n strings\n";
           callHashingFunctionNStrings(optarg);
           break;
         } catch (const string& err) {
@@ -89,9 +90,8 @@ int main(int argc, char* argv[]) {
           return EXIT_FAILURE;
         }
       case 's':
-        cout << "working with a string\n";
-        getline(std::cin, message);
-        cout << callHashingFunctionString(message) << endl;
+        cout << optarg << endl;
+        cout << callHashingFunctionString(optarg) << endl;
         break;
       case 'h':
         cout << outputHelp();

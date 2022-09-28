@@ -79,14 +79,14 @@ string Hash::HashingFunction(const string& message) {
     }
     // creating more words in working schedule
     for (size_t j = 32; j < 128; j++) {
-      W[j] = sigma1(W[j - 14]) + rotr(W[j - 4], 3) + sigma0(W[j - 7]) +
-             sigma0(W[j - 16]);
+      W[j] = sigma1(W[j - 30]) + rotr(W[j - 4], 3) + sigma0(W[j - 7]) +
+             sigma0(W[j - 32]);
     }
 
     // very important loop
     for (size_t j = 0; j < 96; j++) {
       W[j] = (majority(W[j + 3], W[j + 10], W[j]) + rotr(W[j + 11], 14)) ^
-             sigma0(W[j + 2]);
+             sigma0(W[j]);
     }
 
     // initialize working variables
