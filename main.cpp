@@ -10,7 +10,9 @@ using namespace std;
 string outputHelp() {
   stringstream res;
   res << "pass -f and a filename to read from a file\n"
-      << "pass -s to read from stdin\n";
+      << "pass -s to read from stdin\n"
+      << "pass -n to and a filename and number of lines as an argument. Format "
+         "is \"2 file.txt\" (dont forget quotes)\n";
   return res.str();
 }
 
@@ -37,6 +39,26 @@ string callHashingFunctionString(const string& message) {
   return h.HashingFunction(message);
 }
 
+void callHashingFunctionNStrings(const string& arg) {
+  istringstream argBuf(arg);
+  size_t num;
+  string path;
+
+  // parse arguments
+  // TODO: check whether the input is valid
+  argBuf >> num;
+  argBuf >> path;
+  istringstream message(readFromFile(path));
+
+  // hash every line
+  for (size_t i = 0; i < num; i++) {
+    Hash h;
+    string line;
+    getline(message, line);
+    cout << line << " " << h.HashingFunction(line) << endl;
+  }
+}
+
 int main(int argc, char* argv[]) {
   int c, index;
   string message;
@@ -46,12 +68,21 @@ int main(int argc, char* argv[]) {
     return 42;
   }
 
-  while ((c = getopt(argc, argv, "f:sh")) != -1) {
+  while ((c = getopt(argc, argv, "f:n:sh")) != -1) {
     switch (c) {
       case 'f':
         try {
           cout << "reading from file " << optarg << endl;
           cout << callHashingFunctionFile(optarg) << endl;
+          break;
+        } catch (const string& err) {
+          cerr << err;
+          return EXIT_FAILURE;
+        }
+      case 'n':
+        try {
+          cout << "working with n strings\n";
+          callHashingFunctionNStrings(optarg);
           break;
         } catch (const string& err) {
           cerr << err;
