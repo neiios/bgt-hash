@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 #include "hash.hpp"
 using namespace std;
 
@@ -16,10 +17,14 @@ string outputHelp() {
 inline string readFromFile(const string& path) {
   ostringstream buf;
   ifstream file(path);
-  buf << file.rdbuf();
-  file.close();
-  // removes the newline at the end of the file
-  return buf.str().substr(0, buf.str().size() - 1);
+  if (file.good()) {
+    buf << file.rdbuf();
+    file.close();
+    // removes the newline at the end of the file
+    return buf.str().substr(0, buf.str().size() - 1);
+  } else {
+    throw "file " + path + " cannot be opened\n";
+  }
 }
 
 string callHashingFunctionFile(const string& path) {
@@ -29,7 +34,7 @@ string callHashingFunctionFile(const string& path) {
 
 string callHashingFunctionString(const string& message) {
   Hash h;
-  return h.HashingFunction(readFromFile(message));
+  return h.HashingFunction(message);
 }
 
 int main(int argc, char* argv[]) {
@@ -44,9 +49,14 @@ int main(int argc, char* argv[]) {
   while ((c = getopt(argc, argv, "f:sh")) != -1) {
     switch (c) {
       case 'f':
-        cout << "reading from file " << optarg << endl;
-        cout << callHashingFunctionFile(optarg) << endl;
-        break;
+        try {
+          cout << "reading from file " << optarg << endl;
+          cout << callHashingFunctionFile(optarg) << endl;
+          break;
+        } catch (const string& err) {
+          cerr << err;
+          return EXIT_FAILURE;
+        }
       case 's':
         cout << "working with a string\n";
         getline(std::cin, message);
