@@ -22,10 +22,19 @@ inline string readFromFile(const string& path) {
   return buf.str().substr(0, buf.str().size() - 1);
 }
 
+string callHashingFunctionFile(const string& path) {
+  Hash h;
+  return h.HashingFunction(readFromFile(path));
+}
+
+string callHashingFunctionString(const string& message) {
+  Hash h;
+  return h.HashingFunction(readFromFile(message));
+}
+
 int main(int argc, char* argv[]) {
   int c, index;
   string message;
-  Hash h;
 
   if (argc == 1) {
     cout << outputHelp();
@@ -35,13 +44,13 @@ int main(int argc, char* argv[]) {
   while ((c = getopt(argc, argv, "f:sh")) != -1) {
     switch (c) {
       case 'f':
-        cerr << "reading from file " << optarg << endl;
-        cout << h.HashingFunction(readFromFile(optarg)) << endl;
+        cout << "reading from file " << optarg << endl;
+        cout << callHashingFunctionFile(optarg) << endl;
         break;
       case 's':
-        cerr << "working with a string\n";
+        cout << "working with a string\n";
         getline(std::cin, message);
-        cout << h.HashingFunction(message) << endl;
+        cout << callHashingFunctionString(message) << endl;
         break;
       case 'h':
         cout << outputHelp();
