@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
     return 42;
   }
 
-  while ((c = getopt(argc, argv, "f:n:s:h")) != -1) {
+  while ((c = getopt(argc, argv, "f:n:s:hb")) != -1) {
     switch (c) {
       case 'f':
         try {
@@ -47,6 +47,9 @@ int main(int argc, char* argv[]) {
         break;
       case 'h':
         cout << outputHelp();
+        break;
+      case 'b':
+        h.benchmark4();
         break;
       case '?':
         return 42;

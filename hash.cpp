@@ -164,3 +164,25 @@ void Hash::callHashingFunctionNStrings(const string& arg) {
     cout << HashingFunction(line) << endl;
   }
 }
+
+void Hash::benchmark4() {
+  size_t times = 1;
+  for (size_t i = 1; i <= 512; i *= 2) {
+    double totalTime = 0;
+    string line;
+    Timer t;
+    for (size_t k = 0; k < times; k++) {
+      istringstream buf(readFromFile("testing/konstitucija.txt"));
+      for (size_t j = 0; j < i; j++) {
+        getline(buf, line);
+        t.reset();
+        HashingFunction(line);
+        // cout << "Read line " << j << " Hash is " << HashingFunction(line)
+        //      << endl;
+        totalTime += t.elapsed();
+      }
+    }
+    cout << "Reading " << i << " lines took " << to_string(totalTime / times)
+         << endl;
+  }
+}

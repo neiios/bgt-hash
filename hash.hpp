@@ -150,4 +150,10 @@ class Hash {
    * /testing/file-to-read.txt". Must be quoted.
    */
   void callHashingFunctionNStrings(const std::string& arg);
+
+  /**
+   * @brief function to test 4 requirement
+   *
+   */
+  void benchmark4();
 };
