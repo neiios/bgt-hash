@@ -1,11 +1,14 @@
 #include "hash.hpp"
+#include <algorithm>
 #include <bitset>
 #include <cmath>
 #include <cstdint>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <vector>
+#include "timer.hpp"
 
 using namespace std;
 
@@ -15,25 +18,27 @@ uint32_t Hash::rotr(uint32_t n, uint32_t c) {
   return (n >> c) | (n << ((-c) & mask));
 }
 
-uint32_t Hash::choice(uint32_t x, uint32_t y, uint32_t z) {
-  bitset<32> xbits(x), ybits(y), zbits(z), output;
-  for (int i = 0; i < 32; i++) {
-    if (xbits[i]) {
-      output[i] = ybits[i];
-    } else {
-      output[i] = zbits[i];
-    }
-  }
-  return output.to_ulong();
+uint32_t Hash::choice(uint32_t x, uint32_t y, uint32_t z){
+    // bitset<32> xbits(x), ybits(y), zbits(z), output;
+    // for (int i = 0; i < 32; i++) {
+    //   if (xbits[i]) {
+    //     output[i] = ybits[i];
+    //   } else {
+    //     output[i] = zbits[i];
+    //   }
+    // }
+    // return output.to_ulong();
+    return (((x) & (y)) ^ (~(x) & (z)));
 }
 
 uint32_t Hash::majority(uint32_t x, uint32_t y, uint32_t z) {
-  bitset<32> xbits(x), ybits(y), zbits(z), output;
-  for (int i = 0; i < 32; i++) {
-    output[i] = (xbits[i] && ybits[i]) || (ybits[i] && zbits[i]) ||
-                (zbits[i] && xbits[i]);
-  }
-  return output.to_ulong();
+  // bitset<32> xbits(x), ybits(y), zbits(z), output;
+  // for (int i = 0; i < 32; i++) {
+  //   output[i] = (xbits[i] && ybits[i]) || (ybits[i] && zbits[i]) ||
+  //               (zbits[i] && xbits[i]);
+  // }
+  // return output.to_ulong();
+  return (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)));
 }
 
 string Hash::HashingFunction(const string& message) {
@@ -83,12 +88,6 @@ string Hash::HashingFunction(const string& message) {
     for (size_t j = 32; j < 128; j++) {
       W[j] = sigma1(W[j - 30]) + rotr(W[j - 4], 3) + sigma0(W[j - 7]) +
              sigma0(W[j - 32]);
-    }
-
-    // very important loop
-    for (size_t j = 0; j < 96; j++) {
-      W[j] = (majority(W[j + 3], W[j + 10], W[j]) + rotr(W[j + 11], 14)) ^
-             sigma0(W[j]);
     }
 
     // initialize working variables
