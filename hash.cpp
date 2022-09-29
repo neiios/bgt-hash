@@ -132,12 +132,7 @@ inline string Hash::readFromFile(const string& path) {
   if (file.good()) {
     buf << file.rdbuf();
     file.close();
-    // removes the newline at the end of the file
-    if (!buf.str().empty() && buf.str()[buf.str().length() - 1] == '\n') {
-      return buf.str().substr(0, buf.str().size() - 1);
-    } else {
-      return buf.str();
-    }
+    return buf.str();
   } else {
     throw "file " + path + " cannot be opened\n";
   }
