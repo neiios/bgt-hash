@@ -4,7 +4,7 @@ CODEDIRS=.
 INCDIRS=.
 
 CC=g++
-OPT=-O0
+OPT=-O3
 DEPFLAGS=-MP -MD
 CFLAGS=-Wall -Wextra -std=gnu++20 -g $(foreach D,$(INCDIRS),-I$(D)) $(OPT) $(DEPFLAGS)
 
@@ -22,9 +22,6 @@ $(BINARY): $(OBJECTS)
 
 clean:
 	rm -rf $(BINARY) $(OBJECTS) $(DEPFILES)
-
-run: all
-	./bin
 
 -include $(DEPFILES)
 .PHONY: all clean run
