@@ -49,8 +49,13 @@ int main(int argc, char* argv[]) {
         cout << outputHelp();
         break;
       case 'b':
-        h.benchmark4();
-        break;
+        try {
+          h.benchmark4();
+          break;
+        } catch (const string& err) {
+          cerr << err;
+          return EXIT_FAILURE;
+        }
       case '?':
         return 42;
       default:
