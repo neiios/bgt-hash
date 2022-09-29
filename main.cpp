@@ -1,6 +1,5 @@
 #include <getopt.h>
 #include <cstdlib>
-#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -16,55 +15,9 @@ string outputHelp() {
   return res.str();
 }
 
-inline string readFromFile(const string& path) {
-  ostringstream buf;
-  ifstream file(path);
-  if (file.good()) {
-    buf << file.rdbuf();
-    file.close();
-    // removes the newline at the end of the file
-    if (!buf.str().empty() && buf.str()[buf.str().length() - 1] == '\n') {
-      return buf.str().substr(0, buf.str().size() - 1);
-    } else {
-      return buf.str();
-    }
-  } else {
-    throw "file " + path + " cannot be opened\n";
-  }
-}
-
-string callHashingFunctionFile(const string& path) {
-  Hash h;
-  return h.HashingFunction(readFromFile(path));
-}
-
-string callHashingFunctionString(const string& message) {
-  Hash h;
-  return h.HashingFunction(message);
-}
-
-void callHashingFunctionNStrings(const string& arg) {
-  istringstream argBuf(arg);
-  size_t num;
-  string path;
-
-  // parse arguments
-  // TODO: check whether the input is valid
-  argBuf >> num;
-  argBuf >> path;
-  istringstream message(readFromFile(path));
-
-  // hash every line
-  for (size_t i = 0; i < num; i++) {
-    Hash h;
-    string line;
-    getline(message, line);
-    cout << h.HashingFunction(line) << endl;
-  }
-}
-
 int main(int argc, char* argv[]) {
   int c, index;
+  Hash h;
 
   if (argc == 1) {
     cout << outputHelp();
@@ -75,7 +28,7 @@ int main(int argc, char* argv[]) {
     switch (c) {
       case 'f':
         try {
-          cout << callHashingFunctionFile(optarg) << endl;
+          cout << h.callHashingFunctionFile(optarg) << endl;
           break;
         } catch (const string& err) {
           cerr << err;
@@ -83,15 +36,14 @@ int main(int argc, char* argv[]) {
         }
       case 'n':
         try {
-          callHashingFunctionNStrings(optarg);
+          h.callHashingFunctionNStrings(optarg);
           break;
         } catch (const string& err) {
           cerr << err;
           return EXIT_FAILURE;
         }
       case 's':
-        cout << optarg << endl;
-        cout << callHashingFunctionString(optarg) << endl;
+        cout << h.callHashingFunctionString(optarg) << endl;
         break;
       case 'h':
         cout << outputHelp();

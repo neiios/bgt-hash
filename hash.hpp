@@ -11,7 +11,7 @@ class Hash {
    * prime numbers)
    *
    */
-  std::vector<uint32_t> K{
+  const std::vector<uint32_t> K{
       0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
       0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
       0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786,
@@ -40,8 +40,9 @@ class Hash {
    * numbers)
    *
    */
-  std::vector<uint32_t> H0{0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-                           0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
+  const std::vector<uint32_t> H0{0x6a09e667, 0xbb67ae85, 0x3c6ef372,
+                                 0xa54ff53a, 0x510e527f, 0x9b05688c,
+                                 0x1f83d9ab, 0x5be0cd19};
 
   /**
    * @brief right bit rotation
@@ -116,4 +117,37 @@ class Hash {
    * @return std::string
    */
   std::string HashingFunction(const std::string& message);
+
+  /**
+   * @brief function that allows reading from a file
+   *
+   * @param path path to a file
+   * @return std::string the contents of the file
+   */
+  inline std::string readFromFile(const std::string& path);
+
+  /**
+   * @brief wrapper around the hashing function, reads from a file
+   *
+   * @param path path to a file
+   * @return std::string hash of the file contents
+   */
+  std::string callHashingFunctionFile(const std::string& path);
+
+  /**
+   * @brief wraps hashing function, hashes a single string
+   *
+   * @param message string to hash
+   * @return std::string hash of the string
+   */
+  std::string callHashingFunctionString(const std::string& message);
+
+  /**
+   * @brief hashes n string from a file in sequence and outputs the hashes to
+   * stdout
+   *
+   * @param arg path to a file and how many string to read from it. Format: "20
+   * /testing/file-to-read.txt". Must be quoted.
+   */
+  void callHashingFunctionNStrings(const std::string& arg);
 };

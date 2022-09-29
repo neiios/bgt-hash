@@ -2,6 +2,7 @@
 #include <bitset>
 #include <cmath>
 #include <cstdint>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -36,6 +37,7 @@ uint32_t Hash::majority(uint32_t x, uint32_t y, uint32_t z) {
 }
 
 string Hash::HashingFunction(const string& message) {
+  vector<uint32_t> inititalValues = H0;
   // convert data string to a vector of bytes
   vector<uint8_t> bytes;
   for (const uint8_t byte : message) {
@@ -52,7 +54,7 @@ string Hash::HashingFunction(const string& message) {
 
   // pad with ones
   for (uint64_t i = 0; i < zerosToAdd; i += 8) {
-    bytes.push_back(255);
+    bytes.push_back(42);
   }
 
   // append message length as last 64 bits
@@ -90,7 +92,7 @@ string Hash::HashingFunction(const string& message) {
     }
 
     // initialize working variables
-    vector<uint32_t> H = H0;
+    vector<uint32_t> H = inititalValues;
 
     // compression
     for (size_t j = 0; j < 128; j++) {
@@ -111,7 +113,7 @@ string Hash::HashingFunction(const string& message) {
     }
 
     for (int k = 0; k < 8; k++) {
-      H0[k] += H[k];
+      inititalValues[k] += H[k];
     }
   }
 
@@ -119,8 +121,52 @@ string Hash::HashingFunction(const string& message) {
   stringstream res;
   for (int k = 0; k < 8; k++) {
     // should strictly output 8 characters
-    res << hex << setfill('0') << setw(8) << H0[k];
+    res << hex << setfill('0') << setw(8) << inititalValues[k];
   }
 
   return res.str();
+}
+
+inline string Hash::readFromFile(const string& path) {
+  ostringstream buf;
+  ifstream file(path);
+  if (file.good()) {
+    buf << file.rdbuf();
+    file.close();
+    // removes the newline at the end of the file
+    if (!buf.str().empty() && buf.str()[buf.str().length() - 1] == '\n') {
+      return buf.str().substr(0, buf.str().size() - 1);
+    } else {
+      return buf.str();
+    }
+  } else {
+    throw "file " + path + " cannot be opened\n";
+  }
+}
+
+string Hash::callHashingFunctionFile(const string& path) {
+  return HashingFunction(readFromFile(path));
+}
+
+string Hash::callHashingFunctionString(const string& message) {
+  return HashingFunction(message);
+}
+
+void Hash::callHashingFunctionNStrings(const string& arg) {
+  istringstream argBuf(arg);
+  size_t num;
+  string path;
+
+  // parse arguments
+  // TODO: check whether the input is valid
+  argBuf >> num;
+  argBuf >> path;
+  istringstream message(readFromFile(path));
+
+  // hash every line
+  for (size_t i = 0; i < num; i++) {
+    string line;
+    getline(message, line);
+    cout << HashingFunction(line) << endl;
+  }
 }
