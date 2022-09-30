@@ -109,6 +109,24 @@ class Hash {
    */
   uint32_t majority(uint32_t x, uint32_t y, uint32_t z);
 
+  /**
+   * @brief runs test number 3
+   *
+   */
+  void test3();
+
+  /**
+   * @brief runs test number 5
+   *
+   */
+  void test5();
+
+  /**
+   * @brief runs test number 6
+   *
+   */
+  void test6();
+
  public:
   /**
    * @brief the main function of the class, hashes provided string
@@ -152,8 +170,8 @@ class Hash {
   void callHashingFunctionNStrings(const std::string& arg);
 
   /**
-   * @brief function to test 4 requirement
+   * @brief function to run tests
    *
    */
-  void benchmark4();
+  void benchmark();
 };

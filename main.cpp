@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
         break;
       case 'b':
         try {
-          h.benchmark4();
+          h.benchmark();
           break;
         } catch (const string& err) {
           cerr << err;
