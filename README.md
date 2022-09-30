@@ -27,9 +27,17 @@ git clone https://github.com/richard96292/bgt-hash
 # compile program with make (must be inside the root project folder)
 make
 
+# hash abc string
+./bin -s "abc"
+
+# the same but with a file
+printf abc > test.txt
+./bin -f test.txt
+
 # run tests
 cd testing
-./run-all.sh
+# run the test script with newly generated files (-g option generates new files)
+./run-all.sh -g
 ```
 
 ## Command Line Argument'ai
