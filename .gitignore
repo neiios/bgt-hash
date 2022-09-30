@@ -7,3 +7,4 @@ bin
 compile_commands.json
 build
 cmake-build-debug
+testing/*.txt
