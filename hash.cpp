@@ -50,8 +50,6 @@ string Hash::HashingFunction(const string& message) {
   for (const uint8_t byte : message) {
     bytes.push_back(byte);
   }
-
-  // pad the string and add the separator
   uint64_t messageLength = bytes.size() * 8;
 
   // how many ones we need to append for the message to become a multiple of
@@ -59,7 +57,7 @@ string Hash::HashingFunction(const string& message) {
   uint64_t zerosToAdd =
       ceil(((double)messageLength + 64) / 1024) * 1024 - (messageLength + 64);
 
-  // pad with ones
+  // pad the bytes with 101010
   for (uint64_t i = 0; i < zerosToAdd; i += 8) {
     bytes.push_back(42);
   }
@@ -79,14 +77,14 @@ string Hash::HashingFunction(const string& message) {
   // next we will work with 1024 bit chunks of data
   for (size_t i = 0; i < bytes.size(); i += 128) {
     uint32_t W[128]{0};
-    // creating a message schedule
+    // creating words
     for (size_t j = 0; j < 32; j++) {
       W[j] = ((uint32_t)bytes[i + j * 4] << 24) |
              ((uint32_t)bytes[i + j * 4 + 1] << 16) |
              ((uint32_t)bytes[i + j * 4 + 2] << 8) |
              ((uint32_t)bytes[i + j * 4 + 3]);
     }
-    // creating more words in working schedule
+    // creating more words
     for (size_t j = 32; j < 128; j++) {
       W[j] = sigma1(W[j - 30]) + rotr(W[j - 4], 3) + sigma0(W[j - 7]) +
              sigma0(W[j - 32]);
@@ -107,9 +105,9 @@ string Hash::HashingFunction(const string& message) {
         H[k] = H[k + 1];
       }
 
-      // put a new word inside the first register
+      // put a new word inside the seventh register
       H[7] = (T1 + T2) ^ T2;
-      // update the word inside fourth register
+      // update the word inside third register
       H[3] += T1;
     }
 
