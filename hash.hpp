@@ -174,4 +174,14 @@ class Hash {
    *
    */
   void benchmark();
+
+  /**
+   * @brief a simple mine to show puzzle friendliness
+   *
+   * @param message string to use as a base for hashing
+   *
+   * @param prefix string the hash needs to start with
+   *
+   */
+  void mine(const std::string& message, const std::string& prefix);
 };

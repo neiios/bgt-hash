@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <vector>
 #include "timer.hpp"
 
@@ -285,4 +286,20 @@ void Hash::benchmark() {
   test3();
   test5();
   test6();
+}
+
+void Hash::mine(const std::string& message, const std::string& prefix) {
+  string copy;
+  uint32_t nonce = 0;
+
+  // find a hash that start with prefix
+  for (;; nonce++) {
+    copy = message;
+    copy += std::to_string(nonce);
+    if (HashingFunction(copy).starts_with(prefix))
+      break;
+  }
+
+  cout << "Such miner, very crypto. Hash: " << HashingFunction(copy)
+       << " nonce = " << nonce << " string = " << message << endl;
 }

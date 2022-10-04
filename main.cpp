@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     return 42;
   }
 
-  while ((c = getopt(argc, argv, "f:n:s:hb")) != -1) {
+  while ((c = getopt(argc, argv, "f:n:s:hbm:")) != -1) {
     switch (c) {
       case 'f':
         try {
@@ -36,6 +36,9 @@ int main(int argc, char* argv[]) {
           cerr << err;
           return EXIT_FAILURE;
         }
+      case 'm':
+        h.mine(optarg, "000000");
+        break;
       case 'n':
         try {
           h.callHashingFunctionNStrings(optarg);
