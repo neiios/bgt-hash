@@ -62,9 +62,10 @@ echo "Liudvikas Radvilavičius JAVAHASH"
 cd ../2K-3S-BGT
 javac src/lt/vu/mif/stud/*.java
 
-echo "long"
-perf stat -r 10 -B java lt.vu.mif.stud.Main -f ../../testing/long.txt 2>&1 >/dev/null | tail -n 2 | sed 's/ \+//' | sed 's/ /,/'
+cd src
+# echo "long"
+# perf stat -r 10 -B java lt.vu.mif.stud.Main -f ../../testing/long.txt 2>&1 >/dev/null | tail -n 2 | sed 's/ \+//' | sed 's/ /,/'
 # echo "very long"
-# perf stat -r 10 -B java lt.vu.mif.stud.Main -f ../../testing/long.txt 2>&1 >/dev/null | tail -n 2 | sed 's/ \+//' | sed 's/ /,/'
+# perf stat -r 10 -B java lt.vu.mif.stud.Main -f ../../testing/very-long.txt 2>&1 >/dev/null | tail -n 2 | sed 's/ \+//' | sed 's/ /,/'
 # echo "even longer"
-# perf stat -r 10 -B java lt.vu.mif.stud.Main -f ../../testing/long.txt 2>&1 >/dev/null | tail -n 2 | sed 's/ \+//' | sed 's/ /,/'
+# perf stat -r 10 -B java lt.vu.mif.stud.Main -f ../../testing/even-longer.txt 2>&1 >/dev/null | tail -n 2 | sed 's/ \+//' | sed 's/ /,/'
