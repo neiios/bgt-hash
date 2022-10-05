@@ -10,6 +10,7 @@ string outputHelp() {
   stringstream res;
   res << "pass -f and a filename to read from a file\n"
       << "pass -s to read from stdin\n"
+      << "pass -m and a quoted string to mine hashes (test puzzle friendliness)"
       << "pass -b to run a suite of tests (files must be generated "
          "beforehand)\n"
       << "pass -n to and a filename and number of lines as an argument. Format "
