@@ -163,3 +163,19 @@ Min diff: hex - 76.5625%, bin - 24.0234%
 Avg diff: hex - 93.755%, bin - 33.0268%
 Max diff: hex - 100%, bin - 42.5781%
 ```
+
+## Papildomos užduotys
+
+### Puzzle-friendliness ir hiding
+
+Programą galima paleisti su -m argumentu. Programa bando rąsti hash'ą kuris prasideda nuo "000000".
+
+Funkcijoje yra panaudoti bit shift'ai ir rotations. Atgaminti pradinį input'ą yra praktiškai neįmanoma. Geriausias būdas yra brute force.
+
+```bash
+# programos paleidimas su -m flagų
+./bin -m "abc"
+
+# output'as
+Such miner, very crypto. Hash: 0000002e62aa5206712fa851fe2163c64e3df5b091906747c65d6d2d5fe0630e nonce = 11367062 string = abc
+```
