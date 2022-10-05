@@ -166,6 +166,14 @@ Max diff: hex - 100%, bin - 42.5781%
 
 ## Papildomos užduotys
 
+### Palyginimas su SHA256, MD5, SHA1
+
+Palyginti su kitomis funkcijomis leidžia ``-C`` argumentas.
+
+Lyginant su sha256, md5 ir sha3, mano funkcija yra 2 kartus letesnė. Kitų hash funkcijų implementacija buvo paimta iš https://github.com/stbrumme/hash-library repozicijos.
+
+![comparison-graph](/readme-images/comparison.png)
+
 ### Puzzle-friendliness ir hiding
 
 Programą galima paleisti su -m argumentu. Programa bando rąsti hash'ą kuris prasideda nuo "000000".

@@ -127,7 +127,7 @@ string Hash::HashingFunction(const string& message) {
   return res.str();
 }
 
-inline string Hash::readFromFile(const string& path) {
+string Hash::readFromFile(const string& path) {
   ostringstream buf;
   ifstream file(path);
   if (file.good()) {

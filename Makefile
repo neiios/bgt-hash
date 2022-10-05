@@ -1,10 +1,10 @@
 BINARY=bin
 # can be list
-CODEDIRS=.
+CODEDIRS=. hash-library
 INCDIRS=.
 
 CC=g++
-OPT=-O3
+OPT=-O3 -march=native
 DEPFLAGS=-MP -MD
 CFLAGS=-Wall -Wextra -std=gnu++20 -g $(foreach D,$(INCDIRS),-I$(D)) $(OPT) $(DEPFLAGS)
 

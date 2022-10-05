@@ -128,14 +128,6 @@ class Hash {
   void test6();
 
   /**
-   * @brief function that allows reading from a file
-   *
-   * @param path path to a file
-   * @return std::string the contents of the file
-   */
-  inline std::string readFromFile(const std::string& path);
-
-  /**
    * @brief the main function of the class, hashes provided string
    *
    * @param message message that needs to be hashed
@@ -144,6 +136,14 @@ class Hash {
   std::string HashingFunction(const std::string& message);
 
  public:
+  /**
+   * @brief function that allows reading from a file
+   *
+   * @param path path to a file
+   * @return std::string the contents of the file
+   */
+  std::string readFromFile(const std::string& path);
+
   /**
    * @brief wrapper around the hashing function, reads from a file
    *
