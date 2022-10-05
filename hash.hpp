@@ -7,8 +7,8 @@
 class Hash {
  private:
   /**
-   * @brief vector of 64 constants (fractional part of a square root of first 64
-   * prime numbers)
+   * @brief vector with initial values
+   *
    *
    */
   const std::vector<uint32_t> K{
@@ -36,8 +36,8 @@ class Hash {
       0xbef9a3f7, 0xc67178f2};
 
   /**
-   * @brief vector with initial hash values (square roots of first prime
-   * numbers)
+   * @brief vector with initial hash values (for merging the hash)
+   *
    *
    */
   const std::vector<uint32_t> H0{0x6a09e667, 0xbb67ae85, 0x3c6ef372,
@@ -127,15 +127,6 @@ class Hash {
    */
   void test6();
 
- public:
-  /**
-   * @brief the main function of the class, hashes provided string
-   *
-   * @param message message that needs to be hashed
-   * @return std::string
-   */
-  std::string HashingFunction(const std::string& message);
-
   /**
    * @brief function that allows reading from a file
    *
@@ -144,6 +135,15 @@ class Hash {
    */
   inline std::string readFromFile(const std::string& path);
 
+  /**
+   * @brief the main function of the class, hashes provided string
+   *
+   * @param message message that needs to be hashed
+   * @return std::string
+   */
+  std::string HashingFunction(const std::string& message);
+
+ public:
   /**
    * @brief wrapper around the hashing function, reads from a file
    *
