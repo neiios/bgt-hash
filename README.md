@@ -3,19 +3,31 @@
 ## Projekto struktūra
 ```
 bgt-hash
+├── 2K-3S-BGT
+├── BlockChainsExercises
+├── Blockchain-Pratybos
+├── LICENSE
 ├── Makefile
 ├── README.md
+├── hash-generator
+├── hash-generatorius
+├── hash-library
 ├── hash.cpp
 ├── hash.hpp
 ├── main.cpp
+├── readme-images
+│   ├── compare1.png
+│   ├── compare2.png
+│   ├── comparison.png
+│   └── graph.png
 ├── testing
+│   ├── additional.sh
+│   ├── compare-hash-functions.sh
 │   ├── final-tests.sh
 │   ├── generate-files.sh
 │   ├── run-all.sh
 │   └── test-2.sh
 └── timer.hpp
-
-1 directory, 10 files
 ```
 
 ## Projekto setup'as
