@@ -187,3 +187,19 @@ Funkcijoje yra panaudoti bit shift'ai ir rotations. Atgaminti pradinį input'ą 
 # output'as
 Such miner, very crypto. Hash: 0000002e62aa5206712fa851fe2163c64e3df5b091906747c65d6d2d5fe0630e nonce = 11367062 string = abc
 ```
+### Palyginimas su kolegų funkcijomis
+
+Buvo palygintos šešios hash funkcijos. Greičiausios yra numeris 1 ir 3.
+
+|                         | short        | long     | very long | even longer |
+|-------------------------|--------------|----------|-----------|-------------|
+| Igor Repkin             | 0.0015702    | 0.019347 | 0.17259   | 1.60924     |
+| Maksim Barbasov         | 0.0044505    | 0.135825 | 1.31737   | 13.1781     |
+| Markas Vielavicius      | 0.000907     | 0.01661  | 0.116555  | 1.16128     |
+| Deividas Roščenkovas    | 0.0032098    | 0.08806  | 0.83374   | 8.1789      |
+| Eimantas Katinas        | 0.00379      | 0.102719 | 0.98352   | 9.84        |
+| Liudvikas Radvilavičius | 10.184532766 |     -    |     -     |    -        |
+
+![graph1](/readme-images/compare1.png)
+![graph2](/readme-images/compare2.png)
+

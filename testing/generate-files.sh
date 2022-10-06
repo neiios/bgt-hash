@@ -36,6 +36,8 @@ cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-500} | head -n 25000 >>1000
 cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-1000} | head -n 25000 >>100000-lines.txt
 
 # for additional testing
+# 50kb
+tr -dc A-Za-z0-9 </dev/urandom | head -c 50000 >short.txt
 # 2mb
 tr -dc A-Za-z0-9 </dev/urandom | head -c 2000000 >long.txt
 # 20mb
