@@ -1,6 +1,6 @@
 BINARY=bin
-# can be list
-CODEDIRS=. hash-library
+# can be a list
+CODEDIRS=.
 INCDIRS=.
 
 CC=g++

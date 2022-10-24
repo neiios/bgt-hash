@@ -110,47 +110,29 @@ class Hash {
   uint32_t majority(uint32_t x, uint32_t y, uint32_t z);
 
   /**
-   * @brief runs test number 3
-   *
-   */
-  void test3();
-
-  /**
-   * @brief runs test number 5
-   *
-   */
-  void test5();
-
-  /**
-   * @brief runs test number 6
-   *
-   */
-  void test6();
-
-  /**
    * @brief the main function of the class, hashes provided string
    *
    * @param message message that needs to be hashed
    * @return std::string
    */
-  std::string HashingFunction(const std::string& message);
+  std::string hash(const std::string& message);
 
- public:
   /**
    * @brief function that allows reading from a file
    *
    * @param path path to a file
    * @return std::string the contents of the file
    */
-  std::string readFromFile(const std::string& path);
+  std::string readFile(const std::string& path);
 
+ public:
   /**
    * @brief wrapper around the hashing function, reads from a file
    *
    * @param path path to a file
    * @return std::string hash of the file contents
    */
-  std::string callHashingFunctionFile(const std::string& path);
+  std::string hashFile(const std::string& path);
 
   /**
    * @brief wraps hashing function, hashes a single string
@@ -158,30 +140,5 @@ class Hash {
    * @param message string to hash
    * @return std::string hash of the string
    */
-  std::string callHashingFunctionString(const std::string& message);
-
-  /**
-   * @brief hashes n string from a file in sequence and outputs the hashes to
-   * stdout
-   *
-   * @param arg path to a file and how many string to read from it. Format: "20
-   * /testing/file-to-read.txt". Must be quoted.
-   */
-  void callHashingFunctionNStrings(const std::string& arg);
-
-  /**
-   * @brief function to run tests
-   *
-   */
-  void benchmark();
-
-  /**
-   * @brief a simple mine to show puzzle friendliness
-   *
-   * @param message string to use as a base for hashing
-   *
-   * @param prefix string the hash needs to start with
-   *
-   */
-  void mine(const std::string& message, const std::string& prefix);
+  std::string hashString(const std::string& message);
 };
